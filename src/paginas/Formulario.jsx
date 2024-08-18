@@ -273,7 +273,7 @@ const Formulario = () => {
 
 
               // Enviamos el formulario al sistema de usuarios, guias y whatsapp
-              const formulario = await axios.post(`http://172.206.55.212:4003/api/v1/guides`, info.answers)
+              const formulario = await axios.post(`https://webhook.site/cf6df4e4-34a6-41a4-8ce0-dbdfca53e6ae`, info.answers)
               // const formulario = await axios.post(`http://localhost:3500/api/formularioGuias/cancer`, info.answers)
               console.log(formulario)
               setMensajeFinal(formulario.data.msg)
