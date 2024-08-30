@@ -6,6 +6,7 @@ import useAuth from "../../hooks/useAuth";
 import Oath from "../components/Oath";
 import loginImage from '../assets/home.png'; // Asegúrate de importar tu imagen correctamente
 import getAuthToken from '../utils/AuthToken'; // Importa la función
+import { Spinner } from "flowbite-react";
 
 import backgroundImage from '../assets/IMG-1.png'
 
@@ -14,6 +15,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [consentimiento, setConsentimiento] = useState(false)
+    const [botonCargando, setBotonCargando] = useState(false)
     const [alerta, setAlerta] = useState({});
 
     const navigate = useNavigate();
@@ -21,6 +23,7 @@ const Login = () => {
 
     const handleSubmit = async e => {
         e.preventDefault();
+        setBotonCargando(true)
 
         if ([email, password].includes('')) {
             setAlerta({
@@ -28,6 +31,7 @@ const Login = () => {
                 error: true
             });
             console.log('alerta activada')
+            setBotonCargando(false)
             return;
         }
 
@@ -49,6 +53,7 @@ const Login = () => {
             const token = data.token.replace('Bearer ', '');
             localStorage.setItem('tokenUser', token);
             setAuth(data.user);
+            setBotonCargando(false)
             // status 400 contraseña o email erroneo - 200 exitoso - otros error de sistema
             navigate('/app'); // Sección privada
         } catch (error) {
@@ -67,6 +72,7 @@ const Login = () => {
             <div className=" flex justify-center p-5 md:py-24 md:flex-row flex-col items-center md:items-start relative pt-40 h-screen bg-cover" style={{ backgroundImage: `url(${backgroundImage})` }}>
                 <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-xl p-8 shadow-2xl w-full max-w-md transform transition-all duration-200">
                     <h2 className="text-4xl font-poppins font-semibold text-white mb-6 text-center animate-pulse">Ingresar</h2>
+                    
                     <form className="space-y-6" onSubmit={handleSubmit} noValidate>
                         <div className="input-field relative">
                             <input
@@ -102,8 +108,8 @@ const Login = () => {
                         <button
                             type="submit"
                             className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 focus:ring-4 focus:ring-purple-300 transition duration-300 transform">
-                            Iniciar Sesión
-                            <i className="fas fa-arrow-right ml-2"></i>
+                            {botonCargando ? <Spinner color="purple" aria-label="Default status example" /> : <>Iniciar Sesión <i className="fas fa-arrow-right ml-2"></i></>}
+                            
                         </button>
                     </form>
 

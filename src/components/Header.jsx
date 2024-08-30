@@ -42,9 +42,9 @@ const Header = () => {
 
 
             {/* <!--  cuerpo de menú --> */}
-            <div>
+            <div className="flex items-center">
               {/* <!--  Botón responsive --> */}
-              <input type="checkbox" name="hamburger" id="hamburger" className="peer" hidden onChange={handleHamburgerMenu} />
+              <input type="checkbox" name="hamburger" id="hamburger" className="peer invisible" onChange={handleHamburgerMenu} />
               <label htmlFor="hamburger" className="peer-checked:hambuger peer-checked:bg-gray-200 peer-checked:dark:bg-slate-600 block z-20 cursor-pointer md:hidden transition p-5 dark:hover:bg-slate-800 rounded-lg">
                 <div className={hamburgerMenu ? "rotate-45 translate-y-1.5 h-0.5 w-6 bg-black dark:bg-white transition" : "h-0.5 w-6 bg-black dark:bg-white transition"}></div>
                 <div className={hamburgerMenu ? "-rotate-45 -translate-y-1 mt-2 h-0.5 w-6 bg-black dark:bg-white transition" : "mt-2 h-0.5 w-6 bg-black dark:bg-white transition"}></div>
@@ -57,10 +57,10 @@ const Header = () => {
                 <div className="px-6 pt-32 flex flex-col md:flex-row md:items-center gap-3 md:p-0 ">
                   <Link to="/" className="tracking-wide cursor-pointer px-3 py-2 rounded hover:text-white font-semibold text-lg transition hover:bg-pink-500 ">Inicio</Link>
                   <Link to="/nosotros" className="tracking-wide cursor-pointer px-3 py-2 rounded hover:text-white font-semibold text-lg transition hover:bg-yellow-500 ">Nosotros</Link>
-                  <Link href="/blog" className="tracking-wide cursor-pointer px-3 py-2 rounded hover:text-white font-semibold text-lg transition hover:bg-indigo-500 ">Blog</Link>
+                  <Link to="/blog" className="tracking-wide cursor-pointer px-3 py-2 rounded hover:text-white font-semibold text-lg transition hover:bg-indigo-500 ">Blog</Link>
 
                   {/* Cambio de color del tema */}                  
-                    <input type="checkbox" name="theme" id="theme" className="peer" hidden onChange={handleDarkTheme} />
+                    <input type="checkbox" name="theme" id="theme" className="peer invisible" onChange={handleDarkTheme} />
                     <label htmlFor="theme" className="flex flex-row gap-2 justify-left items-center relative cursor-pointer p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-slate-600 dark:hover:bg-slate-700">
                       <svg className="dark:hidden" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
                         <path className="fill-slate-300" d="M7 0h2v2H7zM12.88 1.637l1.414 1.415-1.415 1.413-1.413-1.414zM14 7h2v2h-2zM12.95 14.433l-1.414-1.413 1.413-1.415 1.415 1.414zM7 14h2v2H7zM2.98 14.364l-1.413-1.415 1.414-1.414 1.414 1.415zM0 7h2v2H0zM3.05 1.706 4.463 3.12 3.05 4.535 1.636 3.12z" />

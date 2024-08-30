@@ -59,126 +59,126 @@ const Formulario = () => {
           blocks: [
 
 
-            // // Sección 1: Pantalla de bienvenida
-            // {
-            //   name: "welcome-screen",
-            //   id: "bienvenida",
-            //   attributes: {
-            //     label: `Recibe tu guía para el cáncer acá.`,
-            //     description: "Edúcate con nuestras guías para pacientes",
-            //     attachment: {
-            //       type: "image",
-            //       url:
-            //         "https://quillforms.com/wp-content/uploads/2022/01/4207-ai-1.jpeg"
-            //     },
-            //     attachmentMaxWidth: "700px",
-            //     buttonText: "Comenzar",
-            //   }
-            // },
+            // Sección 1: Pantalla de bienvenida
+            {
+              name: "welcome-screen",
+              id: "bienvenida",
+              attributes: {
+                label: `Recibe tu guía para el cáncer acá.`,
+                description: "Edúcate con nuestras guías para pacientes",
+                attachment: {
+                  type: "image",
+                  url:
+                    "https://quillforms.com/wp-content/uploads/2022/01/4207-ai-1.jpeg"
+                },
+                attachmentMaxWidth: "700px",
+                buttonText: "Comenzar",
+              }
+            },
 
-            // // Sección 2: Opciones de enfermedad
-            // tiposDeCancer,
+            // Sección 2: Opciones de enfermedad
+            tiposDeCancer,
 
-            // // Sección 3: Formularios de tipo de cáncer
-            // ...(enfermedad?.includes("otro") ? otroTipoDeCancerForm : []),
-            // ...(enfermedad?.includes("cancer-pulmon") ? cancerPulmonFormulario : []),
-            // ...(enfermedad?.includes("cancer-mama") ? cancerMamaFormulario : []),
+            // Sección 3: Formularios de tipo de cáncer
+            ...(enfermedad?.includes("otro") ? otroTipoDeCancerForm : []),
+            ...(enfermedad?.includes("cancer-pulmon") ? cancerPulmonFormulario : []),
+            ...(enfermedad?.includes("cancer-mama") ? cancerMamaFormulario : []),
 
-            // // Sección 4: datos Generales
-            // datosGeneralesFormulario,
+            // Sección 4: datos Generales
+            datosGeneralesFormulario,
 
-            // // Sección 5: Estado del paciente
-            // metastasisForm,
+            // Sección 5: Estado del paciente
+            metastasisForm,
 
-            // // Sección 6: Cirugía
-            // {
-            //   name: "dropdown",
-            //   id: "cirugia",
-            //   attributes: {
-            //     required: true,
-            //     attachment: {
-            //       type: "image",
-            //       url:
-            //         "https://quillforms.com/wp-content/uploads/2022/10/ludovic-migneault-B9YbNbaemMI-unsplash_50-scaled.jpeg"
-            //     },
-            //     choices: [
-            //       {
-            //         label: "Si",
-            //         value: "si-cirugia"
-            //       },
-            //       {
-            //         label: "No",
-            //         value: "no-cirugia"
-            //       },
-            //     ],
-            //     label: "¿Se le ha realizado alguna cirugía relacionada al cáncer?",
-            //     nextBtnLabel: "Siguiente",
-            //     layout: "split-right"
-            //   }
-            // },
+            // Sección 6: Cirugía
+            {
+              name: "dropdown",
+              id: "cirugia",
+              attributes: {
+                required: true,
+                attachment: {
+                  type: "image",
+                  url:
+                    "https://quillforms.com/wp-content/uploads/2022/10/ludovic-migneault-B9YbNbaemMI-unsplash_50-scaled.jpeg"
+                },
+                choices: [
+                  {
+                    label: "Si",
+                    value: "si-cirugia"
+                  },
+                  {
+                    label: "No",
+                    value: "no-cirugia"
+                  },
+                ],
+                label: "¿Se le ha realizado alguna cirugía relacionada al cáncer?",
+                nextBtnLabel: "Siguiente",
+                layout: "split-right"
+              }
+            },
 
-            // ...(tuvoCirugia?.includes("si") ? siTuvoCirugia : []),
+            ...(tuvoCirugia?.includes("si") ? siTuvoCirugia : []),
 
 
-            // // Sección 7: Tratamientos del paciente
-            // {
-            //   name: "dropdown",
-            //   id: "tratamiento",
-            //   attributes: {
-            //     attachment: {
-            //       type: "image",
-            //       url:
-            //         "https://quillforms.com/wp-content/uploads/2022/10/ludovic-migneault-B9YbNbaemMI-unsplash_50-scaled.jpeg"
-            //     },
-            //     choices: [
-            //       {
-            //         label: "Si",
-            //         value: "si-tratamiento"
-            //       },
-            //       {
-            //         label: "No",
-            //         value: "no-tratamiento"
-            //       },
-            //     ],
-            //     label: "¿Ha recibido tratamiento para el cáncer?",
-            //     nextBtnLabel: "Siguiente",
-            //     layout: "split-right",
-            //     required: true,
-            //   }
-            // },
+            // Sección 7: Tratamientos del paciente
+            {
+              name: "dropdown",
+              id: "tratamiento",
+              attributes: {
+                attachment: {
+                  type: "image",
+                  url:
+                    "https://quillforms.com/wp-content/uploads/2022/10/ludovic-migneault-B9YbNbaemMI-unsplash_50-scaled.jpeg"
+                },
+                choices: [
+                  {
+                    label: "Si",
+                    value: "si-tratamiento"
+                  },
+                  {
+                    label: "No",
+                    value: "no-tratamiento"
+                  },
+                ],
+                label: "¿Ha recibido tratamiento para el cáncer?",
+                nextBtnLabel: "Siguiente",
+                layout: "split-right",
+                required: true,
+              }
+            },
 
-            // ...(recibioTratamiento?.includes("si") ? tratamientos : []),
-            // ...(cuandoTratamiento?.includes("despues") ? tratamientoDespues : []),
+            ...(recibioTratamiento?.includes("si") ? tratamientos : []),
+            ...(cuandoTratamiento?.includes("despues") ? tratamientoDespues : []),
 
-            // // Sección 8: ECOG
-            // ecogForm,
+            // Sección 8: ECOG
+            ecogForm,
 
-            // // Sección 9: Mensaje
-            // {
-            //   name: "statement",
-            //   id: "mensaje1",
-            //   attributes: {
-            //     label: "Muy bien, ya casi terminamos!",
-            //     buttonText: "Continuar",
-            //     quotationMarks: true
-            //   }
-            // },
+            // Sección 9: Mensaje
+            {
+              name: "statement",
+              id: "mensaje1",
+              attributes: {
+                label: "Muy bien, ya casi terminamos!",
+                buttonText: "Continuar",
+                quotationMarks: true
+              }
+            },
 
-            // // Sección 10: Selección de guías
-            // seleccionGuias,
+            // Sección 10: Selección de guías
+            seleccionGuias,
 
-            // // Sección 11: Mensaje
-            // {
-            //   name: "statement",
-            //   id: "mensaje2",
-            //   attributes: {
-            //     label: "Recibirás tus guías por correo y whatsapp",
-            //     buttonText: "Continuar",
-            //     quotationMarks: true
-            //   }
-            // },
+            // Sección 11: Mensaje
+            {
+              name: "statement",
+              id: "mensaje2",
+              attributes: {
+                label: "Recibirás tus guías por correo y whatsapp",
+                buttonText: "Continuar",
+                quotationMarks: true
+              }
+            },
 
-            // // Sección 12: Pregunta personalizada
+            // Sección 12: Pregunta personalizada
             // {
             //   id: "preguntaPersonalizada",
             //   name: "short-text",
@@ -259,24 +259,27 @@ const Formulario = () => {
 
 
               
-              // const tokenAPI = await getAuthToken(); // Obtén el token usando la función
-              // //localStorage.setItem('tokenAPI', tokenAPI);
+              const tokenAPI = await getAuthToken(); // Obtén el token usando la función
+              //localStorage.setItem('tokenAPI', tokenAPI);
 
-              // console.log(tokenAPI)
+              console.log(tokenAPI)
 
-              // const configWithTokenAPI = {
-              //   headers: {
-              //     "Content-Type": "application/json",
-              //     Authorization: tokenAPI
-              //   }
-              // }
+              const configWithTokenAPI = {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: tokenAPI
+                }
+              }
 
 
               // Enviamos el formulario al sistema de usuarios, guias y whatsapp
-              const url = 'https://webhook.site/cf6df4e4-34a6-41a4-8ce0-dbdfca53e6ae'
+              // const url = 'https://webhook.site/cf6df4e4-34a6-41a4-8ce0-dbdfca53e6ae'
+              // const url = 'http://20.3.128.39'
+
+              const url = 'http://172.206.55.212:4003/api/v1/guides'
               console.log(url)
               console.log(info.answers)
-              const formulario = await axios.post(url, info.answers)
+              const formulario = await axios.post(url, info.answers, configWithTokenAPI)
               // const formulario = await axios.post(`http://localhost:3500/api/formularioGuias/cancer`, info.answers)
               console.log(formulario)
               setMensajeFinal(formulario.data.msg)

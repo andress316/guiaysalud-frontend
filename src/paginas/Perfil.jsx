@@ -2,9 +2,9 @@ import React from 'react'
 
 const Perfil = () => {
   return (
-    <div>
-      Desde Perfil, área privada.
-    </div>
+    <>
+      <div className=''>Acá va el perfil</div>
+    </>
   )
 }
 

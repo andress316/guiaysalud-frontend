@@ -16,6 +16,9 @@ import Formulario from "./paginas/Formulario"
 import FormAutoLogin from "./paginas/FormAutoLogin"
 import RutaPublica from "./layouts/RutaPublica"
 import TerminosYcondiciones from "./paginas/TerminosYcondiciones"
+import Configuracion from "./paginas/Configuracion"
+import Nosotros from "./paginas/Nosotros"
+
 
 
 
@@ -24,35 +27,37 @@ function App() {
 
   return (
     <>
-    
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-        <Route path="/form" element={<Formulario />} />
-        <Route path="/guias/:enfermedad" element={<FormEnfermedad />} />
-        <Route path="/terminosycondiciones" element={<TerminosYcondiciones />}/>
-          <Route path="/" element={<RutaPublica />}>
-            
-            <Route index element={<Inicio />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/registrar" element={<Registrar />} />
-            <Route path="/olvide-password" element={<OlvidePassword />} />
-            <Route path="/olvide-password/:token" element={<NuevoPassword />} />
-            <Route path="/confirmar/:id" element={<ConfirmarCuenta />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/form-auto-login/:email/:password" element={<FormAutoLogin />} />
-          </Route>
-            
+
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            <Route path="/form" element={<Formulario />} />
+            <Route path="/guias/:enfermedad" element={<FormEnfermedad />} />
+            <Route path="/terminosycondiciones" element={<TerminosYcondiciones />} />
+            <Route path="/" element={<RutaPublica />}>
+
+              <Route index element={<Inicio />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/nosotros" element={<Nosotros />} />
+              <Route path="/registrar" element={<Registrar />} />
+              <Route path="/olvide-password" element={<OlvidePassword />} />
+              <Route path="/olvide-password/:token" element={<NuevoPassword />} />
+              <Route path="/confirmar/:id" element={<ConfirmarCuenta />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/form-auto-login/:email/:password" element={<FormAutoLogin />} />
+            </Route>
+
 
             <Route path="/app" element={<RutaProtegida />}>
               <Route index element={<AppInicio />} />
+              <Route path='/app/configuracion' element={<Configuracion/>} />
               <Route path="/app/perfil" element={<Perfil />} />
               <Route path="/app/blog" element={<Blog />} />
             </Route>
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
-    
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
+
     </>
   )
 }

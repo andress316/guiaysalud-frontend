@@ -15,6 +15,7 @@ const Registrar = () => {
     const [repetirPassword, setRepetirPassword] = useState('')
     const [alerta, setAlerta] = useState({})
     const [consentimiento, setConsentimiento] = useState(false)
+    const [botonCargando, setBotonCargando] = useState(false)
 
 
 
@@ -24,12 +25,14 @@ const Registrar = () => {
 
     const handleSubmit = async e => {
         e.preventDefault()
+        setBotonCargando(true)
 
         if (!consentimiento){
             setAlerta({
                 msg: 'Debes aceptar los términos y condiciones',
                 error: true
             })
+            setBotonCargando(false)
             return
         }
 
@@ -38,6 +41,7 @@ const Registrar = () => {
                 msg: 'Todos los campos son obligatorios',
                 error: true
             })
+            setBotonCargando(false)
             return
         }
 
@@ -46,6 +50,7 @@ const Registrar = () => {
                 msg: 'Las contraseñas no so iguales',
                 error: true
             })
+            setBotonCargando(false)
             return
         }
 
@@ -54,6 +59,7 @@ const Registrar = () => {
                 msg: 'Contraseña muy corta, tu contraseña debe tener mínimo 6 caracteres',
                 error: true
             })
+            setBotonCargando(false)
             return
         }
 
@@ -96,6 +102,8 @@ const Registrar = () => {
 
             console.log(data)
             console.log(status)
+            
+            setBotonCargando(false)
     
         } catch (error) {
             setAlerta({
@@ -215,8 +223,7 @@ const Registrar = () => {
                         <button
                             type="submit"
                             className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 focus:ring-4 focus:ring-purple-300 transition duration-300 transform">
-                            Crear Cuenta
-                            <i className="fas fa-arrow-right ml-2"></i>
+                            {botonCargando ? <Spinner color="purple" aria-label="Default status example" /> : <>Crear Cuenta <i className="fas fa-arrow-right ml-2"></i></>}
                         </button>
                     </form>
 

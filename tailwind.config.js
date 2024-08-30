@@ -1,6 +1,14 @@
+import flowbite from "flowbite-react/tailwind"
+
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    flowbite.content(),
+
+  ],
   darkMode: 'class',
   theme: {
     extend: {
@@ -20,5 +28,6 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/aspect-ratio'),
+    flowbite.plugin(),
   ],
 }

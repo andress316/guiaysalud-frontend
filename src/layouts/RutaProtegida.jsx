@@ -1,6 +1,7 @@
 import { Outlet, Navigate } from "react-router-dom"
 import useAuth from "../../hooks/useAuth"
 import AuthHeader from "../components/AuthHeader";
+import Footer from "../components/Footer";
 
 const RutaProtegida = () => {
 
@@ -14,7 +15,7 @@ const RutaProtegida = () => {
           </div>
         </div>
       </div>
-      <h1 className="font-poppins font-medium text-slate-500 absolute right-1/2 bottom-1/2 transform translate-x-1/2 translate-y-1/2 animate-pulse">Cargando</h1>
+      <h1 className="font-poppins font-medium text-slate-600 dark:text-slate-300 absolute right-1/2 bottom-1/2 transform translate-x-1/2 translate-y-1/2 animate-pulse">Cargando</h1>
     </>
   )
 
@@ -27,7 +28,6 @@ const RutaProtegida = () => {
             <div>
               <Outlet />
             </div>
-
           </main>
         </> :
         <Navigate to="/login" />}
