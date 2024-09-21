@@ -22,8 +22,8 @@ const seleccionGuias = {
                 value: "nutricion"
             },
             {
-                label: "Leyes y acceso a tratamiento",
-                value: "legal"
+                label: "Tratamiento",
+                value: "tratamiento"
             },
             {
                 label: "Apoyo psicológico",

@@ -12,6 +12,7 @@ import Footer from "../components/Footer";
 
 const Configuracion = () => {
     const { auth, cargando } = useAuth();
+    
 
 
     return (

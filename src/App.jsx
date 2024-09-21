@@ -18,6 +18,7 @@ import RutaPublica from "./layouts/RutaPublica"
 import TerminosYcondiciones from "./paginas/TerminosYcondiciones"
 import Configuracion from "./paginas/Configuracion"
 import Nosotros from "./paginas/Nosotros"
+import FormTuristik from "./paginas/FormTuristik"
 
 
 
@@ -32,6 +33,7 @@ function App() {
         <AuthProvider>
           <Routes>
             <Route path="/form" element={<Formulario />} />
+            <Route path="/turistik" element={<FormTuristik />} />
             <Route path="/guias/:enfermedad" element={<FormEnfermedad />} />
             <Route path="/terminosycondiciones" element={<TerminosYcondiciones />} />
             <Route path="/" element={<RutaPublica />}>

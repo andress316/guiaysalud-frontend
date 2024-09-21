@@ -11,6 +11,7 @@ import iconoBusquedaTratamiento from "../assets/ICONO-TRATAMIENTOS.png"
 import iconoGrupos from "../assets/ICONO-GRUPOS.png"
 import guiasDeUsuario from "../utils/GuiasBd.js";
 
+
 import { Carousel } from "flowbite-react";
 
 
@@ -22,7 +23,6 @@ const AppInicio = () => {
   const mensajesEndRef = useRef(null);
 
   useEffect(() => {
-    console.log(guiasDeUsuario)
     const consultarGuias = async () => {
       const token = localStorage.getItem('token');
       const config = {
@@ -33,8 +33,19 @@ const AppInicio = () => {
       };
 
       try {
-        //const { data } = await clienteAxios.get(`/pdf-guide/${auth._id}`, config);
-        //setGuias(data);
+        //Consultamos las guías del usuario
+        const tokenAPI = await getAuthToken();
+        const configWithTokenAPI = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: tokenAPI
+          }
+        };
+
+        const {data} = await axios.get(`http://172.206.55.212:4001/api/users/${auth.id}/guide`, configWithTokenAPI);
+        console.log(data)
+
+
       } catch (error) {
         console.error('Error al consultar las guías:', error);
       }
@@ -50,10 +61,13 @@ const AppInicio = () => {
           }
         };
 
-        const { data } = await axios.get(`http://172.206.55.212:4002/api/bot/conversaciones/${auth.id}`, configWithTokenAPI);
+        const { data } = await axios.get(`http://172.206.55.212:4001/api/users/${auth.id}/conversaciones`, configWithTokenAPI);
+
+        console.log(data)
+
         const formattedData = data.map(msg => [
-          { sender: 'me', text: msg.mensajeUsuario.split(/Thu|Sun|Mon|Tue|Wed|Fri|Sat/)[0], createdAt: msg.createdAt },
-          { sender: 'bot', text: msg.MensajeRespuestaBot.split(/Thu|Sun|Mon|Tue|Wed|Fri|Sat/)[0], createdAt: msg.createdAt }
+          { sender: 'me', text: msg.mensajeUsuario.split(/Thu|Sun|Mon|Tue|Wed|Fri|Sat/)[0], createdAt: msg.fecha },
+          { sender: 'bot', text: msg.MensajeRespuestaBot.split(/Thu|Sun|Mon|Tue|Wed|Fri|Sat/)[0], createdAt: msg.fecha }
         ]).flat();
 
         if (formattedData.length === 0) {
@@ -79,6 +93,7 @@ const AppInicio = () => {
   }, [conversacion]);
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     try {
       const token = await getAuthToken();
@@ -89,10 +104,8 @@ const AppInicio = () => {
         }
       };
 
-      // Verifica los datos que estás enviando
-      console.log("Enviando mensaje:", { mensaje, id: auth.id });
 
-      const { data } = await axios.post(`http://172.206.55.212:4002/api/bot/conversaciones`,
+      const {data} = await axios.post(`http://172.206.55.212:4005/api/v1/bot/conversaciones`,
         { mensaje, id: auth.id },
         configWithTokenBot
       );
