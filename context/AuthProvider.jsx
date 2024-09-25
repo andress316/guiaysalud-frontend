@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
 
             // Realizamos una consulta a la API
             try {
-                const { data } = await axios.post('http://172.206.55.212:4001/api/users/verify-token', { token }, configWithTokenAPI);
+                const { data } = await axios.post('http://10.0.0.4:4001/api/users/verify-token', { token }, configWithTokenAPI);
                 const user = data.user
 
                 // Guardamos los datos del usuario en el contexto
