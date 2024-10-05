@@ -36,8 +36,8 @@ const Login = () => {
         }
 
         try {
+            console.log('desde llamada de axios')
             const tokenAPI = await getAuthToken(); // Obtén el token usando la función
-            //localStorage.setItem('tokenAPI', tokenAPI);
 
             const configWithTokenAPI = {
                 headers: {
@@ -46,16 +46,36 @@ const Login = () => {
                 }
             };
 
-            const {data, status} = await axios.post('http://172.206.55.212:4001/api/users/login', { email, password }, configWithTokenAPI);
-            console.log(data)
-            console.log(status)
+            const { data, status } = await axios.post('https://apiusers.guiaysalud.com/api/users/login', { email, password }, configWithTokenAPI);
+
+            if (status === 200 && data.error === '0403.user'){
+                setAlerta({
+                    msg: 'Revisa tu correo y activa tu cuenta',
+                    error: true
+                });
+                setBotonCargando(false)
+                return
+            }
+
+            if (data.error === '0402.user' || data.error === '0401.user') {
+                console.log(data)
+                console.log(status)
+                setAlerta({
+                    msg: 'Usuario o contraseña no válidos',
+                    error: true
+                });
+                setBotonCargando(false)
+                return
+            }
 
             const token = data.token.replace('Bearer ', '');
             localStorage.setItem('tokenUser', token);
+
             setAuth(data.user);
             setBotonCargando(false)
-            // status 400 contraseña o email erroneo - 200 exitoso - otros error de sistema
+
             navigate('/app'); // Sección privada
+
         } catch (error) {
             setAlerta({
                 msg: error.response ? error.response.data.msg : 'Error al realizar la solicitud',
@@ -72,7 +92,7 @@ const Login = () => {
             <div className=" flex justify-center p-5 md:py-24 md:flex-row flex-col items-center md:items-start relative pt-40 h-screen bg-cover" style={{ backgroundImage: `url(${backgroundImage})` }}>
                 <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-xl p-8 shadow-2xl w-full max-w-md transform transition-all duration-200">
                     <h2 className="text-4xl font-poppins font-semibold text-white mb-6 text-center animate-pulse">Ingresar</h2>
-                    
+
                     <form className="space-y-6" onSubmit={handleSubmit} noValidate>
                         <div className="input-field relative">
                             <input
@@ -109,11 +129,14 @@ const Login = () => {
                             type="submit"
                             className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 focus:ring-4 focus:ring-purple-300 transition duration-300 transform">
                             {botonCargando ? <Spinner color="purple" aria-label="Default status example" /> : <>Iniciar Sesión <i className="fas fa-arrow-right ml-2"></i></>}
-                            
+
                         </button>
                     </form>
 
 
+                    <p className="text-white text-center mt-6">
+                        <Link to="/olvide-password" className="font-bold hover:underline"> Recuperar Contraseña</Link>
+                    </p>
                     <p className="text-white text-center mt-6">
                         ¿No tienes una cuenta?
                         <Link to="/registrar" className="font-bold hover:underline"> Crear Cuenta</Link>
@@ -132,7 +155,7 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-          
+
 
 
 

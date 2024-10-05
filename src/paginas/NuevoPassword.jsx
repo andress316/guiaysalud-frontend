@@ -1,105 +1,136 @@
+import { useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import { useState, useEffect } from "react"
-import { clienteAxios } from "../config/clienteAxios"
+import axios from "axios"
 import Alerta from "../components/Alerta"
 import backgroundImage from '../assets/IMG-1.png'
+import getAuthToken from "../utils/AuthToken"
+
 
 
 const NuevoPassword = () => {
-  const [tokenValido, setTokenValido] = useState(false)
+
+  const [newPassword, setNewPassword] = useState('')
+  const [validarPassword, setValidarPassword] = useState('')
   const [alerta, setAlerta] = useState({})
-  const [password, setPassword] = useState('')
-  const [passwordModificado, setPasswordModificado] = useState(false)
   const params = useParams()
-  const { token } = params
-
-
-  useEffect(() => {
-    const comprobarToken = async () => {
-      try {
-        await clienteAxios.get(`/usuarios/olvide-password/${token}`)
-        setTokenValido(true)
-
-      } catch (error) {
-        setAlerta({
-          msg: error.response.data.msg,
-          error: true
-        })
-      }
-    }
-
-    comprobarToken()
-  }, [])
+  const token = params
 
 
   const handleSubmit = async e => {
     e.preventDefault();
 
-    if (password.length < 6) {
+    console.log(token.token)
+
+    if (newPassword === '' || validarPassword === '') {
       setAlerta({
-        msg: 'El password debe tener mínimo 6 caracteres.',
+        msg: 'Campos obligatorios',
+        error: true
+      })
+      return
+    }
+
+    if (newPassword !== validarPassword) {
+      setAlerta({
+        msg: 'Las contraseñas deben ser iguales',
         error: true
       })
       return
     }
 
     try {
-      const { data } = await clienteAxios.post(`/usuarios/olvide-password/${token}`, { password })
-      setPasswordModificado(true)
+      const tokenAPI = await getAuthToken(); // Obtén el token usando la función
 
-      setAlerta({
-        msg: data.msg,
-        error: false
-      })
+      const userNewPassword = {
+        token: token.token,
+        newPassword: newPassword
+      }
+
+      const configWithTokenAPI = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: tokenAPI
+        }
+      };
+
+      const { data, status } = await axios.post(`https://apiusers.guiaysalud.com/api/users/reset-password/`, userNewPassword , configWithTokenAPI)
+      console.log(status)
+
+      if (status === 200) {
+        setAlerta({
+          msg: `Contraseña actualizada, inicia sesión.`,
+          error: false
+        })
+        return
+      }
+
 
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
         error: true
       })
+      return
     }
   }
 
   const { msg } = alerta;
+
   return (
+
     <>
-      <h1 className="text-sky-600 font-black text-6xl capitalize">Ingresa tu nueva <span className="text-slate-700">Contraseña</span></h1>
 
-      {tokenValido && (
+      <div className=" flex justify-center p-5 md:py-24 md:flex-row flex-col items-center md:items-start relative pt-40 h-screen bg-cover" style={{ backgroundImage: `url(${backgroundImage})` }}>
+        <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-xl p-8 shadow-2xl w-full max-w-md transform transition-all duration-200">
+          <h2 className="text-4xl font-poppins font-semibold text-white mb-6 text-center animate-pulse">Ingresa tu nueva contraseña</h2>
+          <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+            <div className="input-field relative">
+              <input
+                id="newPassword"
+                name="newPassword"
+                type="password"
+                autoComplete="newPassword"
+                required
+                placeholder="Nueva contraseña"
+                value={newPassword}
+                onChange={e => setNewPassword(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 focus:bg-opacity-30 focus:outline-none focus:ring-2 focus:ring-blue-300 text-white placeholder-gray-200 transition duration-200"
+              />
+              <i className="fas fa-envelope absolute right-3 top-3 text-white"></i>
+            </div>
+
+            <div className="input-field relative">
+              <input
+                id="validarPassword"
+                name="validarPassword"
+                type="password"
+                autoComplete="validarPassword"
+                required
+                placeholder="Confirmar contraseña"
+                value={validarPassword}
+                onChange={e => setValidarPassword(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 focus:bg-opacity-30 focus:outline-none focus:ring-2 focus:ring-blue-300 text-white placeholder-gray-200 transition duration-200"
+              />
+              <i className="fas fa-envelope absolute right-3 top-3 text-white"></i>
+            </div>
+            {msg && <Alerta alerta={alerta} />}
+
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 focus:ring-4 focus:ring-purple-300 transition duration-300 transform">
+              Cambiar contraseña
+              <i className="fas fa-arrow-right ml-2"></i>
+            </button>
+          </form>
 
 
-        <form className="my-10 bg-white shadow rounded-lg py-10 px-10" onSubmit={handleSubmit}>
-
-          {msg && <Alerta alerta={alerta} />}
-          {!passwordModificado && (
-            <>
-              <div className="my-5">
-                <label htmlFor="password" className="uppercase text-gray-700 block text-xl font-bold">Contraseña</label>
-                <input className="w-full mt-3 p-3 border rounded-xl bg-gray-50" type="password" id="password" placeholder="Ingresa tu contraseña"
-
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-
-                />
-              </div>
-
-              <input type="submit" value="Actualizar Contraseña" className="bg-sky-700 w-full py-3 text-white uppercase font-bold rounded hover:cursor-pointer hover:bg-sky-800 transition-colors mb-5" />
-            </>
-          )}
-
-          {passwordModificado && (
-            <Link className="block text-center my-5 text-slate-500 uppercase text-sm" to="/login">
-              <span className="font-bold">Iniciar Sesión</span>
-            </Link>
-          )}
-        </form>
-      )}
-
-      {!tokenValido && (
-        <div className="my-10 bg-white shadow rounded-lg py-10 px-10">
-          <Alerta alerta={alerta} />
+          <p className="text-white text-center mt-6">
+            ¿No tienes una cuenta?
+            <Link to="/registrar" className="font-bold hover:underline"> Crear Cuenta</Link>
+          </p>
         </div>
-      )}
+      </div>
+
+
 
 
     </>

@@ -4,6 +4,8 @@ import Alerta from "../components/Alerta"
 import axios from "axios"
 import Oath from "../components/Oath"
 import getAuthToken from '../utils/AuthToken'; // Importa la función
+import { Spinner } from "flowbite-react";
+
 
 import backgroundImage from '../assets/IMG-1.png'
 
@@ -98,10 +100,17 @@ const Registrar = () => {
                 }
             };
 
-            const {data, status} = await axios.post('http://172.206.55.212:4001/api/users', { nombre, email, password, confirmPassword: repetirPassword, consentimiento, tipoUsuario: false}, configWithTokenAPI);
+            const {data, status} = await axios.post('https://apiusers.guiaysalud.com/api/users', { nombre, email, password, confirmPassword: repetirPassword, consentimiento, tipoUsuario: false}, configWithTokenAPI);
 
             console.log(data)
             console.log(status)
+
+            if(status === 201){
+                setAlerta({
+                    msg: 'Revisa tu correo para confirmar la cuenta',
+                    error: false
+                })
+            }
             
             setBotonCargando(false)
     
@@ -111,12 +120,6 @@ const Registrar = () => {
                 error: true
             });
         }
-
-
-
-
-
-
     }
 
 

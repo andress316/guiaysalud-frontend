@@ -48,8 +48,13 @@ const AuthProvider = ({ children }) => {
 
             // Realizamos una consulta a la API
             try {
-                const { data } = await axios.post('http://10.0.0.4:4001/api/users/verify-token', { token }, configWithTokenAPI);
+                const { data } = await axios.post('https://apiusers.guiaysalud.com/api/users/verify-token', { token }, configWithTokenAPI);
                 const user = data.user
+
+
+                if(user.enfermedad === null || user.telefono === null){
+                    console.log('Usuario no ha ingresado su enfermedad o teléfono')
+                }
 
                 // Guardamos los datos del usuario en el contexto
                 setAuth(user)

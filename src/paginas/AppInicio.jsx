@@ -42,8 +42,10 @@ const AppInicio = () => {
           }
         };
 
-        const {data} = await axios.get(`http://172.206.55.212:4001/api/users/${auth.id}/guide`, configWithTokenAPI);
-        console.log(data)
+        const {data} = await axios.get(`https://apiusers.guiaysalud.com/api/users/${auth.id}/guide`, configWithTokenAPI);
+
+
+
 
 
       } catch (error) {
@@ -61,9 +63,8 @@ const AppInicio = () => {
           }
         };
 
-        const { data } = await axios.get(`http://172.206.55.212:4001/api/users/${auth.id}/conversaciones`, configWithTokenAPI);
+        const { data } = await axios.get(`https://apiusers.guiaysalud.com/api/users/${auth.id}/conversaciones`, configWithTokenAPI);
 
-        console.log(data)
 
         const formattedData = data.map(msg => [
           { sender: 'me', text: msg.mensajeUsuario.split(/Thu|Sun|Mon|Tue|Wed|Fri|Sat/)[0], createdAt: msg.fecha },
@@ -105,13 +106,11 @@ const AppInicio = () => {
       };
 
 
-      const {data} = await axios.post(`http://172.206.55.212:4005/api/v1/bot/conversaciones`,
+      const {data} = await axios.post(`https://apibot.guiaysalud.com/api/v1/bot/conversaciones`,
         { mensaje, id: auth.id },
         configWithTokenBot
       );
 
-      // Maneja la respuesta de la API
-      console.log("Respuesta del servidor:", data);
 
       setConversacion([
         ...conversacion,
@@ -147,7 +146,7 @@ const AppInicio = () => {
 
             {/* Header del chat */}
             <div className="flex items-center p-4 bg-gradient-to-r from-indigo-800 to-indigo-950 py-5 shadow-lg gap-3">
-              <img class="w-10 h-10 rounded-full bg-indigo-900" src={avatarGuiaYSalud} alt="Rounded avatar" />
+              <img className="w-10 h-10 rounded-full bg-indigo-900" src={avatarGuiaYSalud} alt="Rounded avatar" />
               <h1 className="font-poppins font-bold text-white">Asistente Guía y Salud</h1>
             </div>
 

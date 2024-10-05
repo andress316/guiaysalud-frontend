@@ -276,7 +276,7 @@ const Formulario = () => {
               // const url = 'https://webhook.site/cf6df4e4-34a6-41a4-8ce0-dbdfca53e6ae'
               // const url = 'http://20.3.128.39'
 
-              const url = 'http://172.206.55.212:4003/api/v1/guides'
+              const url = 'https://apiguia.guiaysalud.com/api/v1/guides'
               console.log(url)
               console.log(info.answers)
               const formulario = await axios.post(url, info.answers, configWithTokenAPI)
