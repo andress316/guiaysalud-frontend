@@ -33,6 +33,25 @@ const datosGeneralesFormulario = {
           },
           {
             name: "dropdown",
+            id: "paisDelPaciente",
+            attributes: {
+              choices: [
+                {
+                  label: "Chile",
+                  value: "chile"
+                },
+                {
+                  label: "Argentina",
+                  value: "argentina"
+                },
+              ],
+              label: "¿Cuál es el país del paciente?",
+              description: "Selecciona el país de residencia.",
+              required: true,
+            }
+          },
+          {
+            name: "dropdown",
             id: "regionDelPaciente",
             attributes: {
               choices: [

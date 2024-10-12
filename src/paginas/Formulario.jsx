@@ -81,8 +81,8 @@ const Formulario = () => {
 
             // Sección 3: Formularios de tipo de cáncer
             ...(enfermedad?.includes("otro") ? otroTipoDeCancerForm : []),
-            ...(enfermedad?.includes("cancer-pulmon") ? cancerPulmonFormulario : []),
-            ...(enfermedad?.includes("cancer-mama") ? cancerMamaFormulario : []),
+            ...(enfermedad?.includes("Pulmon") ? cancerPulmonFormulario : []),
+            ...(enfermedad?.includes("Mama") ? cancerMamaFormulario : []),
 
             // Sección 4: datos Generales
             datosGeneralesFormulario,
@@ -270,11 +270,6 @@ const Formulario = () => {
                   Authorization: tokenAPI
                 }
               }
-
-
-              // Enviamos el formulario al sistema de usuarios, guias y whatsapp
-              // const url = 'https://webhook.site/cf6df4e4-34a6-41a4-8ce0-dbdfca53e6ae'
-              // const url = 'http://20.3.128.39'
 
               const url = 'https://apiguia.guiaysalud.com/api/v1/guides'
               console.log(url)

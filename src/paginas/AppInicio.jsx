@@ -6,23 +6,74 @@ import getAuthToken from "../utils/AuthToken";
 import CardGuia from "../components/CardGuia";
 import Footer from "../components/Footer";
 import avatarGuiaYSalud from "../assets/avatar-guia-y-salud.png"
-import avatarUsuarioMasculino from "../assets/avatarUsuarioMasculino.png"
+import avatarUsuarioMasculino from "../assets/AVATAR-HOMBRE-02.png"
 import iconoBusquedaTratamiento from "../assets/ICONO-TRATAMIENTOS.png"
 import iconoGrupos from "../assets/ICONO-GRUPOS.png"
 import guiasDeUsuario from "../utils/GuiasBd.js";
+import Alerta from "../components/Alerta.jsx";
 
 
-import { Carousel } from "flowbite-react";
+import { Carousel, Button, Checkbox, Label, Modal, TextInput, Select } from "flowbite-react";
+
+import BDEnfermedades from "../../../extras/bd-enfermedades.json"
 
 
 const AppInicio = () => {
-  const { auth, cargando } = useAuth();
+  const { auth, cargando, avatar } = useAuth();
   const [guias, setGuias] = useState([]);
   const [mensaje, setMensaje] = useState('');
   const [conversacion, setConversacion] = useState([]);
   const mensajesEndRef = useRef(null);
+  const [alerta, setAlerta] = useState({});
+
+  const [enfermedad, setEnfermedad] = useState()
+  const [sexo, setSexo] = useState()
+  const [pais, setPais] = useState()
+  const [nuevoDia, setNuevoDia] = useState('')
+  const [nuevoMes, setNuevoMes] = useState('')
+  const [nuevoAno, setNuevoAno] = useState('')
+
+  const [openModal, setOpenModal] = useState(true);
+  const emailInputRef = useRef < HTMLInputElement > (null);
+
+
+
+  // calculamos los días y años para formulario de información
+  const anos = []
+  function calcularAnos(limit) {
+    var anoActual = (new Date()).getFullYear()
+    for (var i = anoActual; i >= limit; i--) {
+      anos.push(i)
+    };
+  }
+  calcularAnos(1924)
+
+
+  const dias = []
+  function calcularDias(diaInicial, limit) {
+    for (var i = diaInicial; i <= limit; i++) {
+      dias.push(i)
+    };
+  }
+  calcularDias(1, 31)
+
+
+
+
+
 
   useEffect(() => {
+
+    console.log(auth)
+
+    //Consultamos si el usuario lleno toda su información
+    if (auth.enfermedad) {
+      setOpenModal(false)
+    }
+
+   
+
+    //Consulta de guías generadas
     const consultarGuias = async () => {
       const token = localStorage.getItem('token');
       const config = {
@@ -42,8 +93,10 @@ const AppInicio = () => {
           }
         };
 
-        const {data} = await axios.get(`https://apiusers.guiaysalud.com/api/users/${auth.id}/guide`, configWithTokenAPI);
+        const { data } = await axios.get(`https://apiusers.guiaysalud.com/api/users/${auth.id}/guide`, configWithTokenAPI);
 
+        // const { data } = await axios.get(`https://apiusers.guiaysalud.com/api/users/${auth.id}`, configWithTokenAPI);
+        // console.log(data)
 
 
 
@@ -53,6 +106,12 @@ const AppInicio = () => {
       }
     };
 
+
+
+
+
+
+    // Consulta de datos de conversación
     const consultarConversacion = async () => {
       try {
         const token = await getAuthToken();
@@ -64,6 +123,7 @@ const AppInicio = () => {
         };
 
         const { data } = await axios.get(`https://apiusers.guiaysalud.com/api/users/${auth.id}/conversaciones`, configWithTokenAPI);
+        console.log(data)
 
 
         const formattedData = data.map(msg => [
@@ -93,6 +153,8 @@ const AppInicio = () => {
     }
   }, [conversacion]);
 
+
+
   const handleSubmit = async (e) => {
 
     e.preventDefault();
@@ -106,7 +168,7 @@ const AppInicio = () => {
       };
 
 
-      const {data} = await axios.post(`https://apibot.guiaysalud.com/api/v1/bot/conversaciones`,
+      const { data } = await axios.post(`https://apibot.guiaysalud.com/api/v1/bot/conversaciones`,
         { mensaje, id: auth.id },
         configWithTokenBot
       );
@@ -123,15 +185,56 @@ const AppInicio = () => {
     }
   };
 
+
+
+
+  // Modal POPUP de enfermedad - Manejamos la info fermedad
+  const handleSubmitInformación = async (e) => {
+    e.preventDefault()
+    if (!enfermedad || !pais || !sexo || !nuevoDia || !nuevoMes || !nuevoAno) {
+      setAlerta({
+        msg: 'Todos los campos son obligatorios',
+        error: true
+      });
+      return
+    }
+
+    try {
+      const token = await getAuthToken();
+      const configWithTokenBot = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        }
+      };
+
+      let newAuthData = auth
+      newAuthData.enfermedad = enfermedad
+      newAuthData.pais = pais
+      newAuthData.sexo = sexo
+      newAuthData.fechaNacimiento = `${nuevoDia}/${nuevoMes}/${nuevoAno}`
+
+      const { data } = await axios.put(`https://apiusers.guiaysalud.com/api/users/${auth.id}`, newAuthData, configWithTokenBot)
+      setOpenModal(false)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+
+
   if (cargando) return 'Cargando...';
+  const { msg } = alerta;
 
   return (
 
     <>
       <div className='flex px-5 pt-36 md:py-10 flex-col items-center relative'>
         <h1 className="text-center lg:text-5xl xl:text-6xl text-4xl mb-4 font-black text-indigo-900 dark:text-white lg:pr-5 font-poppins">Bienvenido <span className="text-pink-500 dark:text-pink-500">{auth.nombre}</span></h1>
-        <p className="font-poppins text-indigo-900 dark:text-white dark:text-gray100 md:text-2xl text-xl text-center">Panel de guía y apoyo para <span className="font-extrabold">Cáncer gástrico</span></p>
-        <Link className="font-poppins font-medium text-md mt-2 text-gray-400 hover:text-pink-500">¿Necesitas cambiar de enfermedad?</Link>
+        <p className="font-poppins text-indigo-900 dark:text-white dark:text-gray100 md:text-2xl text-xl text-center">Panel de guía y apoyo para <span className="font-extrabold">{auth.enfermedad}</span></p>
+        <Link to="/app/configuracion" className="font-poppins font-medium text-md mt-2 text-gray-400 hover:text-pink-500">¿Necesitas cambiar de enfermedad?</Link>
 
 
       </div>
@@ -155,7 +258,7 @@ const AppInicio = () => {
               {conversacion.length > 0 ? (
                 conversacion.map((msg, index) => (
                   <div className={`flex gap-2 ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
-                    <img class="w-10 h-10 rounded-full bg-indigo-900" src={msg.sender === 'me' ? avatarUsuarioMasculino : avatarGuiaYSalud} alt="Rounded avatar" />
+                    <img class="w-10 h-10 rounded-full bg-indigo-900" src={msg.sender === 'me' ? avatar : avatarGuiaYSalud} alt="Rounded avatar" />
                     <div
                       key={index}
                       className={`p-3 rounded-lg max-w-xs ${msg.sender === 'me'
@@ -273,6 +376,119 @@ const AppInicio = () => {
 
         <div className="flex bg-white dark:bg-slate-700 rounded-xl mb-5 h-44 w-full md:w-1/2 items-center justify-center transform transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-2xl">Acá van alianzas</div>
       </div>
+
+
+
+
+      <Modal show={openModal} size="md" popup onClose={() => setOpenModal(false)} initialFocus={emailInputRef}>
+
+        <Modal.Body>
+          <div className="space-y-6 mt-6">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Completa la información</h3>
+            <p className="">Completa la información del paciente para una asistencia más personalizada.</p>
+
+            <div className=''>
+              <form onSubmit={handleSubmit}>
+
+
+                <div className='mb-5'>
+                  <div className="max-w-md">
+
+
+                    {/* // Enfermedades */}
+                    <div className="mb-2 block">
+                      <h3 className='font-poppins mb-2 font-bold'>Condición:</h3>
+
+                      <Select id="enfermedad" onChange={e => setEnfermedad(e.target.value)}>
+                        <option value="" selected disabled hidden>Seleccionar</option>
+
+                        {BDEnfermedades.length ? (BDEnfermedades.map((enfermedad) => (
+                          <option value={enfermedad.tipo} >{enfermedad.nombre}</option>
+                        ))) : <option value="" >Seleccionar</option>}
+                      </Select>
+                    </div>
+
+
+                    <div className="mt-5 block">
+                      <h3 className='font-poppins mb-2 font-bold'>Fecha de Nacimiento:</h3>
+                      <div className="flex gap-3">
+                        <Select id="dia" onChange={e => setNuevoDia(e.target.value)}>
+                          <option value="" selected disabled hidden>Día</option>
+                          {dias.length ? (dias.map((dia) => (
+                            <option value={dia} >{dia}</option>
+                          ))) : <option value="" >Seleccionar</option>}
+                        </Select>
+                        <Select id="mes" onChange={e => setNuevoMes(e.target.value)}>
+                          <option value="" selected disabled hidden>Mes</option>
+                          <option value="1">Enero</option>
+                          <option value="2">Febrero</option>
+                          <option value="3">Marzo</option>
+                          <option value="4">Abril</option>
+                          <option value="5">Mayo</option>
+                          <option value="6">Junio</option>
+                          <option value="7">Julio</option>
+                          <option value="8">Agosto</option>
+                          <option value="9">Septiembre</option>
+                          <option value="10">Octuble</option>
+                          <option value="11">Noviembre</option>
+                          <option value="12">Diciembre</option>
+                        </Select>
+                        <Select id="ano" onChange={e => setNuevoAno(e.target.value)}>
+                          <option value="" selected disabled hidden>Año</option>
+                          {
+                            anos.length ? (anos.map((ano) => (
+                              <option value={ano} >{ano}</option>
+                            ))) : <option value="" >Seleccionar</option>
+                          }
+
+                        </Select>
+                      </div>
+                    </div>
+
+                    {/* // Sexo */}
+                    <div className="mt-5 block">
+                      <h3 className='font-poppins mb-2 font-bold'>Sexo:</h3>
+                      <Select id="sexo" onChange={e => setSexo(e.target.value)}>
+                        <option value="" selected disabled hidden>Seleccionar</option>
+                        <option value="masculino" >Masculino</option>
+                        <option value="femenino" >Femenino</option>
+                      </Select>
+                    </div>
+
+
+
+                    {/* // pais */}
+                    <div className="mt-5 block">
+                      <h3 className='font-poppins mb-2 font-bold'>País:</h3>
+                      <Select id="pais" onChange={e => setPais(e.target.value)}>
+                        <option value="" selected disabled hidden>
+                          Seleccionar
+                        </option>
+                        <option>Chile</option>
+                        <option>Argentina</option>
+                        <option>Perú</option>
+                        <option>México</option>
+                        <option>Colombia</option>
+                      </Select>
+                    </div>
+
+
+
+
+
+
+                  </div>
+                </div>
+
+              </form>
+              {msg && <Alerta alerta={alerta} />}
+
+              <button className="block w-full mt-5 px-6 py-2 rounded text-center text-white text-sm font-semibold transition bg-blue-500 hover:hover:bg-blue-600" onClick={handleSubmitInformación}>Guardar</button>
+
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
 
 
       <Footer />

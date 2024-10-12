@@ -8,7 +8,7 @@ const ecogForm = {
     innerBlocks: [
         {
             name: "dropdown",
-            id: "dolor-sintomas",
+            id: "dolorSintomas",
             attributes: {
                 choices: [
                     {
@@ -38,7 +38,7 @@ const ecogForm = {
         },
         {
             name: "dropdown",
-            id: "descanso-en-cama",
+            id: "descansoEnCama",
             attributes: {
                 choices: [
                     {
@@ -68,7 +68,7 @@ const ecogForm = {
         },
         {
             name: "dropdown",
-            id: "actividad-diaria",
+            id: "actividadDiaria",
             attributes: {
                 choices: [
                     {

@@ -1,7 +1,7 @@
 const tratamientoDespues =[
     {
         name: "dropdown",
-        id: "cirugia-despues-de-tratamiento",
+        id: "cirugiaDespuesDeTratamiento",
         attributes: {
             choices: [
                 {

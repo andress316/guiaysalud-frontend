@@ -1,18 +1,11 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import useAuth from '../../hooks/useAuth';
-import AvatarUsuario from "../assets/AVATAR-GRANDE.png"
+import getAuthToken from '../utils/AuthToken';
 import { Table, ToggleSwitch } from "flowbite-react";
 
 const ConfiguracionNotificaciones = () => {
-  const [editarPerfil, setEditarPerfil] = useState(false)
   const { auth, setAuth } = useAuth()
-
-  const { nuevoNombre, setNuevoNombre } = useState()
-  const { nuevaCondicion, setNuevaCondicion } = useState()
-  const { nuevaEdad, setNuevaEdad } = useState()
-  const { nuevoPais, setNuevoPais } = useState()
-  const { nuevaCiudad, setNuevaCiudad } = useState()
-
 
   const [emailNoticias, setEmailNoticias] = useState(true);
   const [emailGuias, setEmailGuias] = useState(true);
@@ -20,35 +13,49 @@ const ConfiguracionNotificaciones = () => {
   const [whatsappNoticias, setWhatsappNoticias] = useState(true);
   const [whatsappGuias, setWhatsappGuias] = useState(true);
   const [whatsappInvitaciones, setWhatsappInvitaciones] = useState(true);
+  const [botonGuardar, setBotonGuardar] = useState(false)
 
-  const configuracionNotificaciones = {
-    email:{
+  const notificaciones = {
+    email: {
       emailNoticias,
       emailGuias,
       emailInvitaciones
     },
-    whatsapp:{
+    whatsapp: {
       whatsappNoticias,
       whatsappGuias,
       whatsappInvitaciones
     }
   }
 
-  const handleEdit = e => {
+
+
+  const handleEdit = async e => {
     e.preventDefault();
-    setEditarPerfil(!editarPerfil)
-    setNuevoNombre()
+    try {
+      const token = await getAuthToken();
+      const configWithTokenBot = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        }
+      };
+
+      const { data } = await axios.put(`https://apiusers.guiaysalud.com/api/users/${auth.id}`, notificaciones, configWithTokenBot)
+      console.log(data)
+      window.location.reload();
+
+    } catch (error) {
+      console.log(error)
+    }
+
   };
 
-  useEffect(() => {
-    console.log(configuracionNotificaciones)
-  },[configuracionNotificaciones])
 
-  
 
   return (
     <>
-      <div className="bg-white dark:bg-slate-700 rounded-xl mb-10 transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-2xl mx-3">
+      <div className="bg-white dark:bg-slate-700 rounded-xl mb-10 pb-10 transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-2xl mx-3">
 
         <h1 className="font-poppins font-bold text-indigo-900 dark:text-white dark:text-gray100 md:text-xl text-xl px-9 pt-5 ">Configuración de Notificaciones</h1>
 
@@ -102,7 +109,7 @@ const ConfiguracionNotificaciones = () => {
           </div>
 
 
-      <div>
+          <div>
 
             <Table className='drop-shadow-none'>
 
@@ -148,12 +155,8 @@ const ConfiguracionNotificaciones = () => {
             </Table>
 
           </div>
-
-
-
-
-
         </div>
+        <button className="flex mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded-lg text-lg hover:shadow-lg hover:shadow-blue-500/50 transition" onClick={handleEdit}>Guardar Cambios</button>
 
       </div>
     </>

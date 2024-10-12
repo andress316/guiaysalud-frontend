@@ -32,7 +32,7 @@ const ConfirmarCuenta = () => {
         };
 
         const { data, status } = await axios.post(`https://apiusers.guiaysalud.com/api/users/activate/${id}`, configWithTokenAPI);
-        console.log(data)
+       
 
         if (data.error === '0405.user' && status === 200) {
           setAlerta({
@@ -71,22 +71,7 @@ const ConfirmarCuenta = () => {
 
 
   return (
-    // <>
-    //   <h1 className="text-sky-600 font-black text-6xl capitalize">Confirma <span className="text-slate-700">tu cuenta</span></h1>
-
-    //   <div>
-    //     {msg && <Alerta alerta={alerta} />}
-    //     {cuentaConfirmada && (
-    //       <Link className="block text-center my-5 text-slate-500 uppercase text-sm" to="/login">
-    //         <span className="font-bold">Iniciar Sesión</span>
-    //       </Link>
-    //     )}
-    //   </div>
-    // </>
-
-
-
-
+  
     <>
 
       <div className=" flex justify-center p-5 md:py-24 md:flex-row flex-col items-center md:items-start relative pt-40 h-screen bg-cover" style={{ backgroundImage: `url(${backgroundImage})` }}>

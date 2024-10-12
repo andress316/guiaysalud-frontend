@@ -12,6 +12,9 @@ const AuthProvider = ({ children }) => {
     const [cargando, setCargando] = useState(true);
     const navigate = useNavigate();
     const [darkTheme, setDarkTheme] = useState()
+    const [enfermedades, setEnfermedades] = useState([])
+    const [avatar, setAvatar] = useState('')
+    const [avatarGrande, setAvatarGrande] = useState('')
 
     // Utilizamos el useEffect para autorizar a los usuarios con el Token
     //Para eso se consulta la API con el token y se guarda los datos de Auth en el state
@@ -27,7 +30,7 @@ const AuthProvider = ({ children }) => {
             document.querySelector('html').classList.remove('dark')
         }
 
-
+        // Verificamos si el usuario está autenticado
         const autenticarUsuario = async () => {
 
             const tokenAPI = await getAuthToken(); // Obtén el token usando la función
@@ -52,9 +55,15 @@ const AuthProvider = ({ children }) => {
                 const user = data.user
 
 
-                if(user.enfermedad === null || user.telefono === null){
-                    console.log('Usuario no ha ingresado su enfermedad o teléfono')
+                if(user.sexo === "femenino"){
+                    setAvatar("../assets/AVATAR-MUJER-02.png")
+                    setAvatarGrande("../assets/AVATAR-MUJER-01.png")
+                } else {
+                    setAvatar("../assets/AVATAR-HOMBRE-02.png")
+                    setAvatarGrande("../assets/AVATAR-HOMBRE-01.png")
                 }
+
+
 
                 // Guardamos los datos del usuario en el contexto
                 setAuth(user)
@@ -74,6 +83,27 @@ const AuthProvider = ({ children }) => {
 
         autenticarUsuario(); // Llamamos la función
 
+
+
+
+
+        // Consultamos el listado de enfermedades para la APP
+        async function consultarEnfermedaddes() {
+            try {
+                const token = await getAuthToken();
+                const configWithTokenBot = {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: token
+                    }
+                };
+                const data = await axios.get(`https://apiguia.guiaysalud.com/api/v1/guides/enfermedades`, configWithTokenBot)               
+                setEnfermedades(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        consultarEnfermedaddes()
     }, []);
 
 
@@ -85,7 +115,11 @@ const AuthProvider = ({ children }) => {
                 setAuth,
                 cargando,
                 darkTheme,
-                setDarkTheme
+                setDarkTheme,
+                avatar,
+                setAvatar,
+                avatarGrande,
+                setAvatarGrande
             }}
         >
             {children}

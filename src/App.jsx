@@ -52,8 +52,8 @@ function App() {
             <Route path="/app" element={<RutaProtegida />}>
               <Route index element={<AppInicio />} />
               <Route path='/app/configuracion' element={<Configuracion/>} />
-              <Route path="/app/perfil" element={<Perfil />} />
-              <Route path="/app/blog" element={<Blog />} />
+              {/* <Route path="/app/perfil" element={<Perfil />} />
+              <Route path="/app/blog" element={<Blog />} /> */}
             </Route>
           </Routes>
         </AuthProvider>

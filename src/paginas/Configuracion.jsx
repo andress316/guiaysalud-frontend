@@ -29,9 +29,9 @@ const Configuracion = () => {
                             <ConfiguracionPerfil />
                         </Tabs.Item>
 
-                        <Tabs.Item title="Notificaciones" icon={HiBell}>
+                        {/* <Tabs.Item title="Notificaciones" icon={HiBell}>
                             <ConfiguracionNotificaciones />
-                        </Tabs.Item>
+                        </Tabs.Item> */}
 
                         <Tabs.Item title="Inicio de Sesión" icon={HiKey}>
                             <ConfiguracionLogin />

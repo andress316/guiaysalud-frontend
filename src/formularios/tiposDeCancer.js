@@ -5,107 +5,107 @@ const tiposDeCancer = {
         choices: [
             {
                 label: "Cabeza y cuello",
-                value: "cancer-cabeza-cuello"
+                value: "CabezaCuello"
             },
             {
                 label: "Cérvix",
-                value: "cancer-cervix"
+                value: "Cervix"
             },
             {
                 label: "Colorrectal",
-                value: "cancer-colorrectal"
+                value: "Colorrectal"
             },
             {
                 label: "Endometrio",
-                value: "cancer-endometrio"
+                value: "Endometrio"
             },
             {
                 label: "Esófago",
-                value: "cancer-esofago"
+                value: "Esofago"
             },
             {
                 label: "Gástrico",
-                value: "cancer-gastrico"
+                value: "Gastrico"
             },
             {
                 label: "GIST",
-                value: "cancer-gist"
+                value: "CancerGist"
             },
             {
                 label: "Hígado",
-                value: "cancer-higado"
+                value: "CancerHigado"
             },
             {
                 label: "Hepatocarcinoma",
-                value: "cancer-hepatocarcinoma"
+                value: "CancerHepatocarcinoma"
             },
             {
                 label: "Leucemia",
-                value: "cancer-leucemia"
+                value: "Leucemia"
             },
             {
                 label: "Linfoma",
-                value: "cancer-linfoma"
+                value: "Linfoma"
             },
             {
                 label: "Mama",
-                value: "cancer-mama"
+                value: "Mama"
             },
             {
                 label: "Melanoma",
-                value: "cancer-melanoma"
+                value: "Melanoma"
             },
             {
                 label: "Mieloma Múltiple",
-                value: "cancer-mieloma-multiple"
+                value: "MielomaMultiple"
             },
             {
                 label: "Ovario",
-                value: "cancer-ovario"
+                value: "Ovario"
             },
             {
                 label: "Páncreas",
-                value: "cancer-pancreas"
+                value: "Pancreas"
             },
             {
                 label: "Piel",
-                value: "cancer-piel"
+                value: "Piel"
             },
             {
                 label: "Próstata",
-                value: "cancer-prostata"
+                value: "Prostata"
             },
             {
                 label: "Pulmón",
-                value: "cancer-pulmon"
+                value: "Pulmon"
             },
             {
                 label: "Renal",
-                value: "cancer-renal"
+                value: "Renal"
             },
             {
                 label: "Tiroides",
-                value: "cancer-tiroides"
+                value: "Tiroides"
             },
             {
                 label: "Urotelio",
-                value: "cancer-urotelio"
+                value: "Urotelio"
             },
             {
                 label: "Útero",
-                value: "cancer-utero"
+                value: "Utero"
             },
             {
                 label: "Vejiga",
-                value: "cancer-vejiga"
+                value: "Vejiga"
             },
             {
                 label: "Vesícula y Vías Biliares",
-                value: "cancer-vesicula-vias-biliares"
+                value: "VesiculaViasBiliares"
             },
             {
                 label: "otro",
-                value: "cancer-otro"
+                value: "Otro"
             },
         ],
         label: "¿Selecciona tu tipo de cáncer?",

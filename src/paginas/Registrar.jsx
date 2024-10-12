@@ -102,8 +102,15 @@ const Registrar = () => {
 
             const {data, status} = await axios.post('https://apiusers.guiaysalud.com/api/users', { nombre, email, password, confirmPassword: repetirPassword, consentimiento, tipoUsuario: false}, configWithTokenAPI);
 
-            console.log(data)
-            console.log(status)
+            
+            if (status === 400){
+                setAlerta({
+                    msg: 'Usuario ya existente, inicia sesión o recupera tu contraseña',
+                    error: true
+                });
+                setBotonCargando(false)
+                return
+            }
 
             if(status === 201){
                 setAlerta({

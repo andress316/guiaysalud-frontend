@@ -19,7 +19,7 @@ const Login = () => {
     const [alerta, setAlerta] = useState({});
 
     const navigate = useNavigate();
-    const { setAuth } = useAuth();
+    const { auth, setAuth } = useAuth();
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -57,9 +57,16 @@ const Login = () => {
                 return
             }
 
+            if (status === 400){
+                setAlerta({
+                    msg: 'Usuario ya existe, inicia sesión o recupera tu contraseña',
+                    error: true
+                });
+                setBotonCargando(false)
+                return
+            }
+
             if (data.error === '0402.user' || data.error === '0401.user') {
-                console.log(data)
-                console.log(status)
                 setAlerta({
                     msg: 'Usuario o contraseña no válidos',
                     error: true
@@ -71,10 +78,14 @@ const Login = () => {
             const token = data.token.replace('Bearer ', '');
             localStorage.setItem('tokenUser', token);
 
+
+
             setAuth(data.user);
             setBotonCargando(false)
 
-            navigate('/app'); // Sección privada
+            console.log(data)
+            window.open("/app","_self");
+            // navigate('/app'); // Sección privada
 
         } catch (error) {
             setAlerta({

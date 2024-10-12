@@ -67,8 +67,8 @@ const AuthHeader = () => {
 
                 <div className="px-6 pt-32 flex flex-col md:flex-row md:items-center gap-3 md:p-0 ">
                   <Link to="/" className="tracking-wide cursor-pointer px-3 py-2 rounded hover:text-white font-semibold text-lg transition hover:bg-pink-500 ">Inicio</Link>
-                  <Link to="/app/perfil" className="tracking-wide cursor-pointer px-3 py-2 rounded hover:text-white font-semibold text-lg transition hover:bg-yellow-400 ">Mi perfil</Link>
-                  <Link to="/app/blog" className="tracking-wide cursor-pointer px-3 py-2 rounded hover:text-white font-semibold text-lg transition hover:bg-indigo-500 ">Blog</Link>
+                  {/* <Link to="/app/perfil" className="tracking-wide cursor-pointer px-3 py-2 rounded hover:text-white font-semibold text-lg transition hover:bg-yellow-400 ">Mi perfil</Link>
+                  <Link to="/app/blog" className="tracking-wide cursor-pointer px-3 py-2 rounded hover:text-white font-semibold text-lg transition hover:bg-indigo-500 ">Blog</Link> */}
 
 
                   {/* Cambio de color del tema */}

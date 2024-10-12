@@ -42,7 +42,7 @@ const tratamientos = [{
 },
 {
     name: "dropdown",
-    id: "cirugia-antes-o-despues",
+    id: "cirugiaAntesODespues",
     attributes: {
         attachment: {
             type: "image",
