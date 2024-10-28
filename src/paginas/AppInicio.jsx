@@ -7,24 +7,27 @@ import CardGuia from "../components/CardGuia";
 import Footer from "../components/Footer";
 import avatarGuiaYSalud from "../assets/avatar-guia-y-salud.png"
 import avatarUsuarioMasculino from "../assets/AVATAR-HOMBRE-02.png"
+import avatarUsuarioFemenino from "../assets/AVATAR-MUJER-02.png"
 import iconoBusquedaTratamiento from "../assets/ICONO-TRATAMIENTOS.png"
 import iconoGrupos from "../assets/ICONO-GRUPOS.png"
 import guiasDeUsuario from "../utils/GuiasBd.js";
 import Alerta from "../components/Alerta.jsx";
 
 
-import { Carousel, Button, Checkbox, Label, Modal, TextInput, Select } from "flowbite-react";
+import { Carousel, Modal, Select, Spinner } from "flowbite-react";
 
 import BDEnfermedades from "../../../extras/bd-enfermedades.json"
 
 
 const AppInicio = () => {
-  const { auth, cargando, avatar } = useAuth();
+  const { auth, cargando } = useAuth();
   const [guias, setGuias] = useState([]);
   const [mensaje, setMensaje] = useState('');
   const [conversacion, setConversacion] = useState([]);
   const mensajesEndRef = useRef(null);
   const [alerta, setAlerta] = useState({});
+  const [botonCargando, setBotonCargando] = useState(false)
+  const [avatarUsuario, setAvatarUsuario] = useState(avatarUsuarioMasculino)
 
   const [enfermedad, setEnfermedad] = useState()
   const [sexo, setSexo] = useState()
@@ -64,14 +67,17 @@ const AppInicio = () => {
 
   useEffect(() => {
 
-    console.log(auth)
-
     //Consultamos si el usuario lleno toda su información
     if (auth.enfermedad) {
       setOpenModal(false)
     }
 
-   
+    //Consultamos el sexo para el avatar
+    if (auth.sexo && auth.sexo === "femenino") {
+      setAvatarUsuario(avatarUsuarioFemenino)
+    }
+
+
 
     //Consulta de guías generadas
     const consultarGuias = async () => {
@@ -156,8 +162,10 @@ const AppInicio = () => {
 
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
+    setBotonCargando(true)
+    console.log(auth.id)
+
     try {
       const token = await getAuthToken();
       const configWithTokenBot = {
@@ -180,8 +188,10 @@ const AppInicio = () => {
         { sender: 'bot', text: data.msg.split(/Thu|Sun|Mon|Tue|Wed|Fri|Sat/)[0], createdAt: new Date() }
       ]);
       setMensaje('');
+      setBotonCargando(false)
     } catch (error) {
       console.error('Error al enviar el mensaje:', error);
+      setBotonCargando(false)
     }
   };
 
@@ -191,11 +201,13 @@ const AppInicio = () => {
   // Modal POPUP de enfermedad - Manejamos la info fermedad
   const handleSubmitInformación = async (e) => {
     e.preventDefault()
+    setBotonCargando(true)
     if (!enfermedad || !pais || !sexo || !nuevoDia || !nuevoMes || !nuevoAno) {
       setAlerta({
         msg: 'Todos los campos son obligatorios',
         error: true
       });
+      setBotonCargando(false)
       return
     }
 
@@ -215,10 +227,12 @@ const AppInicio = () => {
       newAuthData.fechaNacimiento = `${nuevoDia}/${nuevoMes}/${nuevoAno}`
 
       const { data } = await axios.put(`https://apiusers.guiaysalud.com/api/users/${auth.id}`, newAuthData, configWithTokenBot)
+      setBotonCargando(false)
       setOpenModal(false)
 
     } catch (error) {
       console.log(error)
+      setBotonCargando(false)
     }
   }
 
@@ -258,7 +272,7 @@ const AppInicio = () => {
               {conversacion.length > 0 ? (
                 conversacion.map((msg, index) => (
                   <div className={`flex gap-2 ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
-                    <img class="w-10 h-10 rounded-full bg-indigo-900" src={msg.sender === 'me' ? avatar : avatarGuiaYSalud} alt="Rounded avatar" />
+                    <img class="w-10 h-10 rounded-full bg-indigo-900" src={msg.sender === 'me' ? avatarUsuario : avatarGuiaYSalud} alt="Rounded avatar" />
                     <div
                       key={index}
                       className={`p-3 rounded-lg max-w-xs ${msg.sender === 'me'
@@ -283,7 +297,7 @@ const AppInicio = () => {
             <form className="flex p-4 py-5" onSubmit={handleSubmit}>
               <input
                 type="text"
-                placeholder="Escribe tu mensaje..."
+                placeholder="Escribir mensaje"
                 className="font-poppins flex-1 p-3 rounded-full focus:outline-none focus:ring-2 focus:ring-violet-500 mr-2 bg-gray-100 dark:bg-gray-900 dark:text-white text-slate-700 border-none"
                 value={mensaje}
                 onChange={e => setMensaje(e.target.value)}
@@ -292,7 +306,7 @@ const AppInicio = () => {
                 type="submit"
                 className="px-7 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-full transition"
               >
-                Enviar
+                {botonCargando ? <Spinner color="purple" aria-label="Default status example" /> : "Enviar"}
               </button>
             </form>
           </div>
@@ -483,7 +497,9 @@ const AppInicio = () => {
               </form>
               {msg && <Alerta alerta={alerta} />}
 
-              <button className="block w-full mt-5 px-6 py-2 rounded text-center text-white text-sm font-semibold transition bg-blue-500 hover:hover:bg-blue-600" onClick={handleSubmitInformación}>Guardar</button>
+              <button className="block w-full mt-5 px-6 py-2 rounded text-center text-white text-sm font-semibold transition bg-blue-500 hover:hover:bg-blue-600" onClick={handleSubmitInformación}>
+                {botonCargando ? <Spinner color="white" aria-label="Default status example" /> : <>Continuar<i className="fas fa-arrow-right ml-2"></i></>}
+              </button>
 
             </div>
           </div>

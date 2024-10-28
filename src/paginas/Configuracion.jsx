@@ -1,7 +1,7 @@
 import { Outlet, Link } from "react-router-dom"
 import useAuth from "../../hooks/useAuth";
 import { Tabs } from "flowbite-react";
-import { HiBell, HiUserCircle, HiKey, HiShieldCheck } from "react-icons/hi";
+import { HiUserCircle, HiKey, HiShieldCheck } from "react-icons/hi";
 import ConfiguracionPerfil from "../components/ConfiguracionPerfil";
 import ConfiguracionNotificaciones from "../components/ConfiguracionNotificaciones";
 import ConfiguracionTerminos from "../components/ConfiguracionTerminos";

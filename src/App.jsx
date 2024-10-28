@@ -18,7 +18,7 @@ import RutaPublica from "./layouts/RutaPublica"
 import TerminosYcondiciones from "./paginas/TerminosYcondiciones"
 import Configuracion from "./paginas/Configuracion"
 import Nosotros from "./paginas/Nosotros"
-
+import FormularioDoctores from "./paginas/FormularioDoctores"
 
 
 
@@ -32,12 +32,12 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/form" element={<Formulario />} />
-            <Route path="/guias/:enfermedad" element={<FormEnfermedad />} />
-            <Route path="/terminosycondiciones" element={<TerminosYcondiciones />} />
             <Route path="/" element={<RutaPublica />}>
 
               <Route index element={<Inicio />} />
+              <Route path="/form" element={<Formulario />} />
+              <Route path="/guias/:enfermedad" element={<FormEnfermedad />} />
+              <Route path="/terminosycondiciones" element={<TerminosYcondiciones />} />
               <Route path="/login" element={<Login />} />
               <Route path="/nosotros" element={<Nosotros />} />
               <Route path="/registrar" element={<Registrar />} />
@@ -46,12 +46,13 @@ function App() {
               <Route path="/confirmar/:id" element={<ConfirmarCuenta />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/form-auto-login/:email/:password" element={<FormAutoLogin />} />
+              <Route path="/form-doctores" element={<FormularioDoctores />} />
             </Route>
 
 
             <Route path="/app" element={<RutaProtegida />}>
               <Route index element={<AppInicio />} />
-              <Route path='/app/configuracion' element={<Configuracion/>} />
+              <Route path='/app/configuracion' element={<Configuracion />} />
               {/* <Route path="/app/perfil" element={<Perfil />} />
               <Route path="/app/blog" element={<Blog />} /> */}
             </Route>

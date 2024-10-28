@@ -4,6 +4,7 @@ import axios from "axios"
 import Alerta from "../components/Alerta"
 import backgroundImage from '../assets/IMG-1.png'
 import getAuthToken from "../utils/AuthToken"
+import { Spinner } from "flowbite-react";
 
 
 
@@ -12,20 +13,22 @@ const NuevoPassword = () => {
   const [newPassword, setNewPassword] = useState('')
   const [validarPassword, setValidarPassword] = useState('')
   const [alerta, setAlerta] = useState({})
+  const [botonCargando, setBotonCargando] = useState(false)
+
   const params = useParams()
   const token = params
 
 
   const handleSubmit = async e => {
     e.preventDefault();
-
-    console.log(token.token)
+    setBotonCargando(true)
 
     if (newPassword === '' || validarPassword === '') {
       setAlerta({
         msg: 'Campos obligatorios',
         error: true
       })
+      setBotonCargando(false)
       return
     }
 
@@ -34,6 +37,7 @@ const NuevoPassword = () => {
         msg: 'Las contraseñas deben ser iguales',
         error: true
       })
+      setBotonCargando(false)
       return
     }
 
@@ -60,6 +64,7 @@ const NuevoPassword = () => {
           msg: `Contraseña actualizada, inicia sesión.`,
           error: false
         })
+        setBotonCargando(false)
         return
       }
 
@@ -69,6 +74,7 @@ const NuevoPassword = () => {
         msg: error.response.data.msg,
         error: true
       })
+      setBotonCargando(false)
       return
     }
   }
@@ -117,8 +123,7 @@ const NuevoPassword = () => {
             <button
               type="submit"
               className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 focus:ring-4 focus:ring-purple-300 transition duration-300 transform">
-              Cambiar contraseña
-              <i className="fas fa-arrow-right ml-2"></i>
+              {botonCargando ? <Spinner color="purple" aria-label="Default status example" /> : <>Cambiar Contraseña <i className="fas fa-arrow-right ml-2"></i></>}
             </button>
           </form>
 

@@ -4,6 +4,7 @@ import axios from "axios"
 import Alerta from "../components/Alerta"
 import backgroundImage from '../assets/IMG-1.png'
 import getAuthToken from "../utils/AuthToken"
+import { Spinner } from "flowbite-react";
 
 
 
@@ -11,16 +12,19 @@ const OlvidePassword = () => {
 
   const [email, setEmail] = useState('')
   const [alerta, setAlerta] = useState({})
+  const [botonCargando, setBotonCargando] = useState(false)
 
 
   const handleSubmit = async e => {
     e.preventDefault();
+    setBotonCargando(true)
 
     if (email === '') {
       setAlerta({
         msg: 'Ingresa un correo válido',
         error: true
       })
+      setBotonCargando(false)
       return
     }
 
@@ -35,13 +39,13 @@ const OlvidePassword = () => {
       };
 
       const { data, status } = await axios.post(`https://apiusers.guiaysalud.com/api/users/forgot-password/`, { email }, configWithTokenAPI)
-      console.log(status)
 
       if(status === 200){
         setAlerta({
           msg: `Revisa tu correo ${email} para continuar.`,
           error: false
         })
+        setBotonCargando(false)
         return
       }
 
@@ -50,11 +54,14 @@ const OlvidePassword = () => {
         error: false
       })
 
+      setBotonCargando(false)
+
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
         error: true
       })
+      setBotonCargando(false)
       return
     }
   }
@@ -88,8 +95,7 @@ const OlvidePassword = () => {
             <button
               type="submit"
               className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 focus:ring-4 focus:ring-purple-300 transition duration-300 transform">
-              Recuperar contraseña
-              <i className="fas fa-arrow-right ml-2"></i>
+             {botonCargando ? <Spinner color="purple" aria-label="Default status example" /> : <>Recuperar Contraseña <i className="fas fa-arrow-right ml-2"></i></>}
             </button>
           </form>
 
